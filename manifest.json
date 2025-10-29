@@ -1,0 +1,36 @@
+{
+  "name": "Dark CLC Pro - Scientific Calculator",
+  "short_name": "Dark CLC Pro",
+  "description": "Advanced Scientific Calculator with 50+ Functions, Matrix & Unit Tools, Offline Ready",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0e1a",
+  "theme_color": "#00d9ff",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "utilities"],
+  "screenshots": [],
+  "features": [
+    "50+ mathematical functions",
+    "Physics and chemistry constants",
+    "Unit conversions",
+    "Memory functions",
+    "Multiple angle modes",
+    "Offline functionality",
+    "6 beautiful themes"
+  ]
+}

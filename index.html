@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0e1a">
+    <meta name="description" content="Dark CLC Pro - Advanced Scientific Calculator with 50+ Functions, Matrix & Unit Tools, Offline Ready">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dark CLC Pro">
+    <title>Dark CLC Pro - Scientific Calculator</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="matrix-rain"></canvas>
+    <div id="splash-screen" class="splash-screen active">
+        <div class="splash-background">
+            <div class="math-particles">
+                <span class="particle">π</span>
+                <span class="particle">∑</span>
+                <span class="particle">∫</span>
+                <span class="particle">√</span>
+                <span class="particle">∞</span>
+                <span class="particle">θ</span>
+                <span class="particle">α</span>
+                <span class="particle">β</span>
+                <span class="particle">∆</span>
+                <span class="particle">Ω</span>
+            </div>
+        </div>
+        <div class="splash-content">
+            <div class="logo-container">
+                <div class="logo-glow"></div>
+                <img src="/logo.png" alt="Dark CLC Pro" class="splash-logo">
+            </div>
+            <p class="splash-subtitle">Advanced Scientific Calculator</p>
+            <div class="splash-features">
+                <div class="feature-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                    <span>Student Friendly</span>
+                </div>
+                <div class="feature-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 16v-4M12 8h.01"/>
+                    </svg>
+                    <span>Learning Mode</span>
+                </div>
+                <div class="feature-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    </svg>
+                    <span>50+ Functions</span>
+                </div>
+            </div>
+            <div class="badges">
+                <span class="badge">Matrix & Unit Tools</span>
+                <span class="badge">Offline Ready</span>
+                <span class="badge">Multi-Language</span>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-fill"></div>
+            </div>
+            <p class="tap-continue">Tap anywhere to continue</p>
+        </div>
+    </div>
+
+    <div id="app" class="app hidden">
+        <header class="header">
+            <div class="header-left">
+                <h1 class="app-title">Dark CLC Pro</h1>
+                <span class="memory-indicator" id="memoryIndicator"></span>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn" id="angleModeBtn" title="Angle Mode">
+                    <span id="angleModeText">DEG</span>
+                </button>
+                <button class="icon-btn lang-btn" id="languageBtn" title="Toggle Language">
+                    <span id="languageText">বাংলা</span>
+                </button>
+                <button class="icon-btn" id="installBtn" title="Install App" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="themeBtn" title="Change Theme">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="historyBtn" title="History">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="stepsBtn" title="Show Steps">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="8" y1="6" x2="21" y2="6"/>
+                        <line x1="8" y1="12" x2="21" y2="12"/>
+                        <line x1="8" y1="18" x2="21" y2="18"/>
+                        <line x1="3" y1="6" x2="3.01" y2="6"/>
+                        <line x1="3" y1="12" x2="3.01" y2="12"/>
+                        <line x1="3" y1="18" x2="3.01" y2="18"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="helpBtn" title="Help">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="display-panel">
+            <div class="display-history" id="displayHistory"></div>
+            <div class="display-expression" id="displayExpression">0</div>
+            <div class="display-result" id="displayResult"></div>
+            <div class="display-info">
+                <span id="modeInfo">Standard Mode</span>
+                <button class="copy-result-btn" id="copyResultBtn" title="Copy result">📋 Copy</button>
+                <button class="show-steps-hint" id="showStepsHint" style="display: none;">Click 📋 to see calculation steps</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="basic">Basic</button>
+            <button class="tab-btn" data-tab="advanced">Advanced</button>
+            <button class="tab-btn" data-tab="programmer">Programmer</button>
+            <button class="tab-btn" data-tab="equations">Equations</button>
+            <button class="tab-btn" data-tab="statistics">Statistics</button>
+            <button class="tab-btn" data-tab="matrix">Matrix</button>
+            <button class="tab-btn" data-tab="constants">Constants</button>
+            <button class="tab-btn" data-tab="conversion">Conversion</button>
+            <button class="tab-btn" data-tab="formulas">Formulas</button>
+            <button class="tab-btn" data-tab="percentage">Percentage</button>
+            <button class="tab-btn" data-tab="geometry">Geometry</button>
+            <button class="tab-btn" data-tab="examples">Examples</button>
+        </div>
+
+        <div class="calculator-body">
+            <div class="tab-content active" id="basic-tab">
+                <div class="button-grid">
+                    <button class="calc-btn memory-btn" data-action="mc">MC</button>
+                    <button class="calc-btn memory-btn" data-action="mr">MR</button>
+                    <button class="calc-btn memory-btn" data-action="m+">M+</button>
+                    <button class="calc-btn memory-btn" data-action="m-">M−</button>
+
+                    <button class="calc-btn function-btn" data-value="sin(">sin</button>
+                    <button class="calc-btn function-btn" data-value="cos(">cos</button>
+                    <button class="calc-btn function-btn" data-value="tan(">tan</button>
+                    <button class="calc-btn function-btn" data-value="log(">log</button>
+
+                    <button class="calc-btn function-btn" data-value="asin(">sin⁻¹</button>
+                    <button class="calc-btn function-btn" data-value="acos(">cos⁻¹</button>
+                    <button class="calc-btn function-btn" data-value="atan(">tan⁻¹</button>
+                    <button class="calc-btn function-btn" data-value="ln(">ln</button>
+
+                    <button class="calc-btn function-btn" data-value="sqrt(">√</button>
+                    <button class="calc-btn function-btn" data-value="^2">x²</button>
+                    <button class="calc-btn function-btn" data-value="^">xʸ</button>
+                    <button class="calc-btn function-btn" data-value="!">x!</button>
+
+                    <button class="calc-btn operator-btn" data-value="(">(</button>
+                    <button class="calc-btn operator-btn" data-value=")">)</button>
+                    <button class="calc-btn operator-btn" data-value="%">mod</button>
+                    <button class="calc-btn delete-btn" data-action="delete">DEL</button>
+                    <button class="calc-btn clear-btn" data-action="clear">C</button>
+
+                    <button class="calc-btn number-btn" data-value="7">7</button>
+                    <button class="calc-btn number-btn" data-value="8">8</button>
+                    <button class="calc-btn number-btn" data-value="9">9</button>
+                    <button class="calc-btn operator-btn" data-value="/">÷</button>
+
+                    <button class="calc-btn number-btn" data-value="4">4</button>
+                    <button class="calc-btn number-btn" data-value="5">5</button>
+                    <button class="calc-btn number-btn" data-value="6">6</button>
+                    <button class="calc-btn operator-btn" data-value="*">×</button>
+
+                    <button class="calc-btn number-btn" data-value="1">1</button>
+                    <button class="calc-btn number-btn" data-value="2">2</button>
+                    <button class="calc-btn number-btn" data-value="3">3</button>
+                    <button class="calc-btn operator-btn" data-value="-">−</button>
+
+                    <button class="calc-btn number-btn" data-value="0">0</button>
+                    <button class="calc-btn number-btn" data-value=".">.</button>
+                    <button class="calc-btn function-btn" data-action="ans">ANS</button>
+                    <button class="calc-btn operator-btn" data-value="+">+</button>
+
+                    <button class="calc-btn constant-btn" data-value="Math.PI">π</button>
+                    <button class="calc-btn constant-btn" data-value="Math.E">e</button>
+                    <button class="calc-btn function-btn" data-action="rand">rand</button>
+                    <button class="calc-btn equals-btn" data-action="equals">=</button>
+                </div>
+            </div>
+
+            <div class="tab-content" id="advanced-tab">
+                <div class="button-grid">
+                    <button class="calc-btn function-btn" data-value="sinh(">sinh</button>
+                    <button class="calc-btn function-btn" data-value="cosh(">cosh</button>
+                    <button class="calc-btn function-btn" data-value="tanh(">tanh</button>
+                    <button class="calc-btn function-btn" data-value="^3">x³</button>
+
+                    <button class="calc-btn function-btn" data-value="asinh(">sinh⁻¹</button>
+                    <button class="calc-btn function-btn" data-value="acosh(">cosh⁻¹</button>
+                    <button class="calc-btn function-btn" data-value="atanh(">tanh⁻¹</button>
+                    <button class="calc-btn function-btn" data-value="cbrt(">∛</button>
+
+                    <button class="calc-btn function-btn" data-value="floor(">⌊x⌋</button>
+                    <button class="calc-btn function-btn" data-value="ceil(">⌈x⌉</button>
+                    <button class="calc-btn function-btn" data-value="round(">round</button>
+                    <button class="calc-btn function-btn" data-value="abs(">|x|</button>
+
+                    <button class="calc-btn function-btn" data-value="gcd(">GCD</button>
+                    <button class="calc-btn function-btn" data-value="lcm(">LCM</button>
+                    <button class="calc-btn function-btn" data-value="10^">10ˣ</button>
+                    <button class="calc-btn function-btn" data-value="exp(">eˣ</button>
+
+                    <button class="calc-btn operator-btn" data-value="(">(</button>
+                    <button class="calc-btn operator-btn" data-value=")">)</button>
+                    <button class="calc-btn operator-btn" data-value="%">mod</button>
+                    <button class="calc-btn delete-btn" data-action="delete">DEL</button>
+                    <button class="calc-btn clear-btn" data-action="clear">C</button>
+
+                    <button class="calc-btn number-btn" data-value="7">7</button>
+                    <button class="calc-btn number-btn" data-value="8">8</button>
+                    <button class="calc-btn number-btn" data-value="9">9</button>
+                    <button class="calc-btn operator-btn" data-value="/">÷</button>
+
+                    <button class="calc-btn number-btn" data-value="4">4</button>
+                    <button class="calc-btn number-btn" data-value="5">5</button>
+                    <button class="calc-btn number-btn" data-value="6">6</button>
+                    <button class="calc-btn operator-btn" data-value="*">×</button>
+
+                    <button class="calc-btn number-btn" data-value="1">1</button>
+                    <button class="calc-btn number-btn" data-value="2">2</button>
+                    <button class="calc-btn number-btn" data-value="3">3</button>
+                    <button class="calc-btn operator-btn" data-value="-">−</button>
+
+                    <button class="calc-btn number-btn" data-value="0">0</button>
+                    <button class="calc-btn number-btn" data-value=".">.</button>
+                    <button class="calc-btn function-btn" data-action="ans">ANS</button>
+                    <button class="calc-btn operator-btn" data-value="+">+</button>
+
+                    <button class="calc-btn constant-btn" data-value="Math.PI">π</button>
+                    <button class="calc-btn constant-btn" data-value="Math.E">e</button>
+                    <button class="calc-btn function-btn" data-action="rand">rand</button>
+                    <button class="calc-btn equals-btn" data-action="equals">=</button>
+                </div>
+            </div>
+
+            <div class="tab-content" id="programmer-tab">
+                <div class="programmer-panel">
+                    <div class="base-section">
+                        <h3>Base Converter</h3>
+                        <div class="base-input-group">
+                            <label>Decimal (DEC)</label>
+                            <input type="text" class="base-input" id="base-dec" data-base="10" placeholder="Enter number">
+                        </div>
+                        <div class="base-input-group">
+                            <label>Binary (BIN)</label>
+                            <input type="text" class="base-input" id="base-bin" data-base="2" placeholder="0b...">
+                        </div>
+                        <div class="base-input-group">
+                            <label>Octal (OCT)</label>
+                            <input type="text" class="base-input" id="base-oct" data-base="8" placeholder="0o...">
+                        </div>
+                        <div class="base-input-group">
+                            <label>Hexadecimal (HEX)</label>
+                            <input type="text" class="base-input" id="base-hex" data-base="16" placeholder="0x...">
+                        </div>
+                    </div>
+                    <div class="bitwise-section">
+                        <h3>Bitwise Operations</h3>
+                        <div class="button-grid-small">
+                            <button class="calc-btn function-btn" data-value="&">AND</button>
+                            <button class="calc-btn function-btn" data-value="|">OR</button>
+                            <button class="calc-btn function-btn" data-value="^">XOR</button>
+                            <button class="calc-btn function-btn" data-value="~">NOT</button>
+                            <button class="calc-btn function-btn" data-value="<<"><<</button>
+                            <button class="calc-btn function-btn" data-value=">>">>></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="equations-tab">
+                <div class="equation-panel">
+                    <h3>Quadratic Equation Solver</h3>
+                    <div class="equation-display-editable" id="equationDisplay">
+                        <span class="equation-term">
+                            <input type="number" class="coeff-input" id="quad-a" value="1" step="any">
+                            <span class="var-label">x²</span>
+                        </span>
+                        <span class="equation-operator" id="op-b">+</span>
+                        <span class="equation-term">
+                            <input type="number" class="coeff-input" id="quad-b" value="0" step="any" placeholder="b">
+                            <span class="var-label">x</span>
+                        </span>
+                        <span class="equation-operator" id="op-c">+</span>
+                        <span class="equation-term">
+                            <input type="number" class="coeff-input" id="quad-c" value="0" step="any" placeholder="c">
+                        </span>
+                        <span class="equation-operator">=</span>
+                        <span class="var-label">0</span>
+                    </div>
+                    <div class="equation-inputs">
+                        <div class="equation-input-group">
+                            <label>Coefficient a:</label>
+                            <input type="number" class="equation-input" id="quad-a-sync" value="1" step="any">
+                        </div>
+                        <div class="equation-input-group">
+                            <label>Coefficient b:</label>
+                            <input type="number" class="equation-input" id="quad-b-sync" value="0" step="any">
+                        </div>
+                        <div class="equation-input-group">
+                            <label>Coefficient c:</label>
+                            <input type="number" class="equation-input" id="quad-c-sync" value="0" step="any">
+                        </div>
+                    </div>
+                    <button class="solve-btn" id="solveQuadratic">Solve Equation</button>
+                    <button class="reset-btn" id="resetQuadratic">Reset</button>
+                    <div class="equation-result" id="quadResult"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="statistics-tab">
+                <div class="stats-panel">
+                    <h3>Statistical Analysis</h3>
+                    <div class="stats-input-group">
+                        <label>Enter numbers (comma-separated):</label>
+                        <textarea class="stats-input" id="statsData" placeholder="1, 2, 3, 4, 5"></textarea>
+                    </div>
+                    <button class="solve-btn" id="calculateStats">Calculate</button>
+                    <div class="stats-results" id="statsResults"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="matrix-tab">
+                <div class="matrix-panel">
+                    <h3>Matrix Calculator (2x2)</h3>
+                    <div class="matrix-container">
+                        <div class="matrix-input-section">
+                            <p>Matrix A</p>
+                            <div class="matrix-grid">
+                                <input type="number" class="matrix-cell" id="a11" value="1">
+                                <input type="number" class="matrix-cell" id="a12" value="0">
+                                <input type="number" class="matrix-cell" id="a21" value="0">
+                                <input type="number" class="matrix-cell" id="a22" value="1">
+                            </div>
+                        </div>
+                        <div class="matrix-input-section">
+                            <p>Matrix B</p>
+                            <div class="matrix-grid">
+                                <input type="number" class="matrix-cell" id="b11" value="1">
+                                <input type="number" class="matrix-cell" id="b12" value="0">
+                                <input type="number" class="matrix-cell" id="b21" value="0">
+                                <input type="number" class="matrix-cell" id="b22" value="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="matrix-operations">
+                        <button class="matrix-btn" id="matrixAdd">A + B</button>
+                        <button class="matrix-btn" id="matrixSubtract">A - B</button>
+                        <button class="matrix-btn" id="matrixMultiply">A × B</button>
+                        <button class="matrix-btn" id="matrixDeterminant">Det(A)</button>
+                        <button class="matrix-btn" id="matrixInverse">A⁻¹</button>
+                        <button class="matrix-btn" id="matrixTranspose">Aᵀ</button>
+                    </div>
+                    <div class="matrix-result" id="matrixResult"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="constants-tab">
+                <div class="constants-grid">
+                    <button class="constant-card" data-value="Math.PI">
+                        <div class="constant-symbol">π</div>
+                        <div class="constant-desc">Pi (3.14159...)</div>
+                    </button>
+                    <button class="constant-card" data-value="Math.E">
+                        <div class="constant-symbol">e</div>
+                        <div class="constant-desc">Euler's Number (2.71828...)</div>
+                    </button>
+                    <button class="constant-card" data-value="1.618033988749895">
+                        <div class="constant-symbol">φ</div>
+                        <div class="constant-desc">Golden Ratio</div>
+                    </button>
+                    <button class="constant-card" data-value="299792458">
+                        <div class="constant-symbol">c</div>
+                        <div class="constant-desc">Speed of Light (m/s)</div>
+                    </button>
+                    <button class="constant-card" data-value="9.80665">
+                        <div class="constant-symbol">g</div>
+                        <div class="constant-desc">Gravity (m/s²)</div>
+                    </button>
+                    <button class="constant-card" data-value="6.62607015e-34">
+                        <div class="constant-symbol">h</div>
+                        <div class="constant-desc">Planck's Constant (J·s)</div>
+                    </button>
+                    <button class="constant-card" data-value="1.380649e-23">
+                        <div class="constant-symbol">k</div>
+                        <div class="constant-desc">Boltzmann Constant (J/K)</div>
+                    </button>
+                    <button class="constant-card" data-value="6.02214076e23">
+                        <div class="constant-symbol">Nₐ</div>
+                        <div class="constant-desc">Avogadro's Number (1/mol)</div>
+                    </button>
+                    <button class="constant-card" data-value="8.314462618">
+                        <div class="constant-symbol">R</div>
+                        <div class="constant-desc">Gas Constant (J/(mol·K))</div>
+                    </button>
+                    <button class="constant-card" data-value="9.1093837015e-31">
+                        <div class="constant-symbol">mₑ</div>
+                        <div class="constant-desc">Electron Mass (kg)</div>
+                    </button>
+                    <button class="constant-card" data-value="1.67262192369e-27">
+                        <div class="constant-symbol">mₚ</div>
+                        <div class="constant-desc">Proton Mass (kg)</div>
+                    </button>
+                    <button class="constant-card" data-value="1.602176634e-19">
+                        <div class="constant-symbol">e⁻</div>
+                        <div class="constant-desc">Elementary Charge (C)</div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="tab-content" id="conversion-tab">
+                <div class="conversion-panel">
+                    <div class="conversion-section">
+                        <h3>Length</h3>
+                        <div class="conversion-row">
+                            <input type="number" class="conversion-input" id="length-input" value="1" data-type="length">
+                            <select class="conversion-select" id="length-from" data-type="length">
+                                <option value="1">Meters (m)</option>
+                                <option value="1000">Kilometers (km)</option>
+                                <option value="0.01">Centimeters (cm)</option>
+                                <option value="0.001">Millimeters (mm)</option>
+                                <option value="1609.34">Miles (mi)</option>
+                                <option value="0.9144">Yards (yd)</option>
+                                <option value="0.3048">Feet (ft)</option>
+                                <option value="0.0254">Inches (in)</option>
+                            </select>
+                        </div>
+                        <div class="conversion-arrow">⇅</div>
+                        <div class="conversion-row">
+                            <input type="number" class="conversion-output" id="length-output" readonly data-type="length">
+                            <select class="conversion-select" id="length-to" data-type="length">
+                                <option value="1">Meters (m)</option>
+                                <option value="1000" selected>Kilometers (km)</option>
+                                <option value="0.01">Centimeters (cm)</option>
+                                <option value="0.001">Millimeters (mm)</option>
+                                <option value="1609.34">Miles (mi)</option>
+                                <option value="0.9144">Yards (yd)</option>
+                                <option value="0.3048">Feet (ft)</option>
+                                <option value="0.0254">Inches (in)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="conversion-section">
+                        <h3>Temperature</h3>
+                        <div class="conversion-row">
+                            <input type="number" class="conversion-input" id="temp-input" value="0" data-type="temperature">
+                            <select class="conversion-select" id="temp-from" data-type="temperature">
+                                <option value="C" selected>Celsius (°C)</option>
+                                <option value="F">Fahrenheit (°F)</option>
+                                <option value="K">Kelvin (K)</option>
+                            </select>
+                        </div>
+                        <div class="conversion-arrow">⇅</div>
+                        <div class="conversion-row">
+                            <input type="number" class="conversion-output" id="temp-output" readonly data-type="temperature">
+                            <select class="conversion-select" id="temp-to" data-type="temperature">
+                                <option value="C">Celsius (°C)</option>
+                                <option value="F" selected>Fahrenheit (°F)</option>
+                                <option value="K">Kelvin (K)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="conversion-section">
+                        <h3>Weight</h3>
+                        <div class="conversion-row">
+                            <input type="number" class="conversion-input" id="weight-input" value="1" data-type="weight">
+                            <select class="conversion-select" id="weight-from" data-type="weight">
+                                <option value="1" selected>Kilograms (kg)</option>
+                                <option value="0.001">Grams (g)</option>
+                                <option value="0.000001">Milligrams (mg)</option>
+                                <option value="0.453592">Pounds (lb)</option>
+                                <option value="0.0283495">Ounces (oz)</option>
+                            </select>
+                        </div>
+                        <div class="conversion-arrow">⇅</div>
+                        <div class="conversion-row">
+                            <input type="number" class="conversion-output" id="weight-output" readonly data-type="weight">
+                            <select class="conversion-select" id="weight-to" data-type="weight">
+                                <option value="1">Kilograms (kg)</option>
+                                <option value="0.001">Grams (g)</option>
+                                <option value="0.000001">Milligrams (mg)</option>
+                                <option value="0.453592" selected>Pounds (lb)</option>
+                                <option value="0.0283495">Ounces (oz)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="conversion-section">
+                        <h3>Volume</h3>
+                        <div class="conversion-row">
+                            <input type="number" class="conversion-input" id="volume-input" value="1" data-type="volume">
+                            <select class="conversion-select" id="volume-from" data-type="volume">
+                                <option value="1" selected>Liters (L)</option>
+                                <option value="0.001">Milliliters (mL)</option>
+                                <option value="3.78541">Gallons (gal)</option>
+                                <option value="0.946353">Quarts (qt)</option>
+                                <option value="0.473176">Pints (pt)</option>
+                                <option value="0.236588">Cups (cup)</option>
+                            </select>
+                        </div>
+                        <div class="conversion-arrow">⇅</div>
+                        <div class="conversion-row">
+                            <input type="number" class="conversion-output" id="volume-output" readonly data-type="volume">
+                            <select class="conversion-select" id="volume-to" data-type="volume">
+                                <option value="1">Liters (L)</option>
+                                <option value="0.001" selected>Milliliters (mL)</option>
+                                <option value="3.78541">Gallons (gal)</option>
+                                <option value="0.946353">Quarts (qt)</option>
+                                <option value="0.473176">Pints (pt)</option>
+                                <option value="0.236588">Cups (cup)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="formulas-tab">
+                <div class="formulas-panel">
+                    <h3>Common Mathematical Formulas</h3>
+                    <div class="formula-categories">
+                        <div class="formula-category">
+                            <h4>Algebra</h4>
+                            <div class="formula-item">
+                                <div class="formula-name">Quadratic Formula</div>
+                                <div class="formula-equation">x = (-b ± √(b² - 4ac)) / 2a</div>
+                            </div>
+                            <div class="formula-item">
+                                <div class="formula-name">Difference of Squares</div>
+                                <div class="formula-equation">a² - b² = (a + b)(a - b)</div>
+                            </div>
+                            <div class="formula-item">
+                                <div class="formula-name">Perfect Square</div>
+                                <div class="formula-equation">(a ± b)² = a² ± 2ab + b²</div>
+                            </div>
+                        </div>
+                        <div class="formula-category">
+                            <h4>Trigonometry</h4>
+                            <div class="formula-item">
+                                <div class="formula-name">Pythagorean Theorem</div>
+                                <div class="formula-equation">a² + b² = c²</div>
+                            </div>
+                            <div class="formula-item">
+                                <div class="formula-name">Sine Rule</div>
+                                <div class="formula-equation">a/sin(A) = b/sin(B) = c/sin(C)</div>
+                            </div>
+                            <div class="formula-item">
+                                <div class="formula-name">Cosine Rule</div>
+                                <div class="formula-equation">c² = a² + b² - 2ab·cos(C)</div>
+                            </div>
+                            <div class="formula-item">
+                                <div class="formula-name">Trigonometric Identity</div>
+                                <div class="formula-equation">sin²(θ) + cos²(θ) = 1</div>
+                            </div>
+                        </div>
+                        <div class="formula-category">
+                            <h4>Calculus</h4>
+                            <div class="formula-item">
+                                <div class="formula-name">Power Rule</div>
+                                <div class="formula-equation">d/dx(xⁿ) = n·xⁿ⁻¹</div>
+                            </div>
+                            <div class="formula-item">
+                                <div class="formula-name">Product Rule</div>
+                                <div class="formula-equation">d/dx(uv) = u'v + uv'</div>
+                            </div>
+                            <div class="formula-item">
+                                <div class="formula-name">Chain Rule</div>
+                                <div class="formula-equation">d/dx(f(g(x))) = f'(g(x))·g'(x)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="percentage-tab">
+                <div class="percentage-panel">
+                    <h3>Percentage Calculator</h3>
+                    <div class="calc-section">
+                        <h4>What is X% of Y?</h4>
+                        <div class="input-row">
+                            <label>X (%):</label>
+                            <input type="number" class="calc-input" id="pct-x1" value="20">
+                            <label>of Y:</label>
+                            <input type="number" class="calc-input" id="pct-y1" value="100">
+                        </div>
+                        <button class="calc-btn-secondary" id="calcPct1">Calculate</button>
+                        <div class="result-display" id="pctResult1"></div>
+                    </div>
+                    <div class="calc-section">
+                        <h4>X is what % of Y?</h4>
+                        <div class="input-row">
+                            <label>X:</label>
+                            <input type="number" class="calc-input" id="pct-x2" value="25">
+                            <label>of Y:</label>
+                            <input type="number" class="calc-input" id="pct-y2" value="100">
+                        </div>
+                        <button class="calc-btn-secondary" id="calcPct2">Calculate</button>
+                        <div class="result-display" id="pctResult2"></div>
+                    </div>
+                    <div class="calc-section">
+                        <h4>Percentage Change</h4>
+                        <div class="input-row">
+                            <label>From:</label>
+                            <input type="number" class="calc-input" id="pct-from" value="50">
+                            <label>To:</label>
+                            <input type="number" class="calc-input" id="pct-to" value="75">
+                        </div>
+                        <button class="calc-btn-secondary" id="calcPct3">Calculate</button>
+                        <div class="result-display" id="pctResult3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="geometry-tab">
+                <div class="geometry-panel">
+                    <h3>Geometry Calculator</h3>
+                    <div class="geometry-sections">
+                        <div class="geo-section">
+                            <h4>Circle</h4>
+                            <div class="input-group">
+                                <label>Radius (r):</label>
+                                <input type="number" class="geo-input" id="circle-r" value="5">
+                            </div>
+                            <button class="calc-btn-secondary" id="calcCircle">Calculate</button>
+                            <div class="geo-results" id="circleResults"></div>
+                        </div>
+                        <div class="geo-section">
+                            <h4>Rectangle</h4>
+                            <div class="input-group">
+                                <label>Length:</label>
+                                <input type="number" class="geo-input" id="rect-l" value="10">
+                                <label>Width:</label>
+                                <input type="number" class="geo-input" id="rect-w" value="5">
+                            </div>
+                            <button class="calc-btn-secondary" id="calcRect">Calculate</button>
+                            <div class="geo-results" id="rectResults"></div>
+                        </div>
+                        <div class="geo-section">
+                            <h4>Triangle</h4>
+                            <div class="input-group">
+                                <label>Base:</label>
+                                <input type="number" class="geo-input" id="tri-b" value="8">
+                                <label>Height:</label>
+                                <input type="number" class="geo-input" id="tri-h" value="6">
+                            </div>
+                            <button class="calc-btn-secondary" id="calcTri">Calculate</button>
+                            <div class="geo-results" id="triResults"></div>
+                        </div>
+                        <div class="geo-section">
+                            <h4>Sphere</h4>
+                            <div class="input-group">
+                                <label>Radius (r):</label>
+                                <input type="number" class="geo-input" id="sphere-r" value="4">
+                            </div>
+                            <button class="calc-btn-secondary" id="calcSphere">Calculate</button>
+                            <div class="geo-results" id="sphereResults"></div>
+                        </div>
+                        <div class="geo-section">
+                            <h4>Cylinder</h4>
+                            <div class="input-group">
+                                <label>Radius (r):</label>
+                                <input type="number" class="geo-input" id="cyl-r" value="3">
+                                <label>Height (h):</label>
+                                <input type="number" class="geo-input" id="cyl-h" value="7">
+                            </div>
+                            <button class="calc-btn-secondary" id="calcCyl">Calculate</button>
+                            <div class="geo-results" id="cylResults"></div>
+                        </div>
+                        <div class="geo-section">
+                            <h4>Cube</h4>
+                            <div class="input-group">
+                                <label>Side (a):</label>
+                                <input type="number" class="geo-input" id="cube-a" value="5">
+                            </div>
+                            <button class="calc-btn-secondary" id="calcCube">Calculate</button>
+                            <div class="geo-results" id="cubeResults"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="examples-tab">
+                <div class="examples-panel">
+                    <h3>Worked Examples</h3>
+                    <div class="example-categories">
+                        <div class="example-item">
+                            <div class="example-title">Example 1: Quadratic Equation</div>
+                            <div class="example-problem">Solve: x² - 5x + 6 = 0</div>
+                            <div class="example-steps">
+                                <div class="step">Step 1: Identify a=1, b=-5, c=6</div>
+                                <div class="step">Step 2: Apply quadratic formula</div>
+                                <div class="step">Step 3: x = (5 ± √(25-24))/2 = (5 ± 1)/2</div>
+                                <div class="step">Step 4: x₁ = 3, x₂ = 2</div>
+                            </div>
+                        </div>
+                        <div class="example-item">
+                            <div class="example-title">Example 2: Percentage Problem</div>
+                            <div class="example-problem">A shirt costs $50. It's on sale for 30% off. What's the final price?</div>
+                            <div class="example-steps">
+                                <div class="step">Step 1: Calculate discount: 30% of $50</div>
+                                <div class="step">Step 2: 0.30 × 50 = $15</div>
+                                <div class="step">Step 3: Final price = $50 - $15 = $35</div>
+                            </div>
+                        </div>
+                        <div class="example-item">
+                            <div class="example-title">Example 3: Circle Area</div>
+                            <div class="example-problem">Find the area of a circle with radius 7cm</div>
+                            <div class="example-steps">
+                                <div class="step">Step 1: Use formula A = πr²</div>
+                                <div class="step">Step 2: A = π × 7²</div>
+                                <div class="step">Step 3: A = π × 49 ≈ 153.94 cm²</div>
+                            </div>
+                        </div>
+                        <div class="example-item">
+                            <div class="example-title">Example 4: Pythagorean Theorem</div>
+                            <div class="example-problem">Find the hypotenuse when a=3 and b=4</div>
+                            <div class="example-steps">
+                                <div class="step">Step 1: Use a² + b² = c²</div>
+                                <div class="step">Step 2: 3² + 4² = c²</div>
+                                <div class="step">Step 3: 9 + 16 = 25 = c²</div>
+                                <div class="step">Step 4: c = √25 = 5</div>
+                            </div>
+                        </div>
+                        <div class="example-item">
+                            <div class="example-title">Example 5: Mean & Standard Deviation</div>
+                            <div class="example-problem">Dataset: 2, 4, 6, 8, 10</div>
+                            <div class="example-steps">
+                                <div class="step">Step 1: Mean = (2+4+6+8+10)/5 = 6</div>
+                                <div class="step">Step 2: Variance = average of (x-mean)²</div>
+                                <div class="step">Step 3: Variance = 8</div>
+                                <div class="step">Step 4: Std Dev = √8 ≈ 2.83</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="historyPanel" class="side-panel">
+        <div class="panel-header">
+            <h2>History</h2>
+            <button class="close-panel-btn" id="closeHistoryBtn">×</button>
+        </div>
+        <div class="panel-content" id="historyContent">
+            <p class="empty-message">No history yet</p>
+        </div>
+        <button class="clear-history-btn" id="clearHistoryBtn">Clear All</button>
+    </div>
+
+    <div id="stepsPanel" class="side-panel">
+        <div class="panel-header">
+            <h2 id="stepsPanelTitle">Step-by-Step Solution</h2>
+            <button class="close-panel-btn" id="closeStepsBtn">×</button>
+        </div>
+        <div class="panel-content" id="stepsContent">
+            <p class="empty-message">Perform a calculation to see step-by-step breakdown</p>
+        </div>
+    </div>
+
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal-btn" id="closeHelpBtn">×</button>
+            <h2>Keyboard Shortcuts</h2>
+            <div class="shortcuts-list">
+                <div class="shortcut-item"><kbd>0-9</kbd><span>Numbers</span></div>
+                <div class="shortcut-item"><kbd>+ - * /</kbd><span>Basic Operations</span></div>
+                <div class="shortcut-item"><kbd>.</kbd><span>Decimal Point</span></div>
+                <div class="shortcut-item"><kbd>( )</kbd><span>Parentheses</span></div>
+                <div class="shortcut-item"><kbd>Enter</kbd><span>Calculate (=)</span></div>
+                <div class="shortcut-item"><kbd>Esc</kbd><span>Clear</span></div>
+                <div class="shortcut-item"><kbd>Backspace</kbd><span>Delete Last Character</span></div>
+                <div class="shortcut-item"><kbd>?</kbd><span>Show This Help</span></div>
+            </div>
+            <h3>Features</h3>
+            <ul class="features-list">
+                <li>Real-time calculation preview</li>
+                <li>Step-by-step breakdown for learning</li>
+                <li>Memory functions (MC, MR, M+, M−)</li>
+                <li>Angle modes (DEG, RAD, GRAD)</li>
+                <li>50+ mathematical functions</li>
+                <li>Physics & chemistry constants</li>
+                <li>Unit conversions (length, temp, weight, volume)</li>
+                <li>Offline functionality via PWA</li>
+                <li>6 beautiful themes</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="themeModal" class="modal">
+        <div class="modal-content theme-modal-content">
+            <button class="close-modal-btn" id="closeThemeBtn">×</button>
+            <h2>Choose Theme</h2>
+            <div class="theme-section">
+                <h3 class="theme-category">Dark Themes</h3>
+                <div class="theme-grid">
+                    <button class="theme-option" data-theme="default">
+                        <div class="theme-preview default-preview"></div>
+                        <span>Default (Cyan)</span>
+                    </button>
+                    <button class="theme-option" data-theme="emerald">
+                        <div class="theme-preview emerald-preview"></div>
+                        <span>Emerald</span>
+                    </button>
+                    <button class="theme-option" data-theme="purple">
+                        <div class="theme-preview purple-preview"></div>
+                        <span>Purple</span>
+                    </button>
+                    <button class="theme-option" data-theme="crimson">
+                        <div class="theme-preview crimson-preview"></div>
+                        <span>Crimson</span>
+                    </button>
+                    <button class="theme-option" data-theme="amber">
+                        <div class="theme-preview amber-preview"></div>
+                        <span>Amber</span>
+                    </button>
+                    <button class="theme-option" data-theme="white">
+                        <div class="theme-preview white-preview"></div>
+                        <span>White</span>
+                    </button>
+                </div>
+            </div>
+            <div class="theme-section">
+                <h3 class="theme-category">Light Themes</h3>
+                <div class="theme-grid">
+                    <button class="theme-option" data-theme="light">
+                        <div class="theme-preview light-preview"></div>
+                        <span>Light (Blue)</span>
+                    </button>
+                    <button class="theme-option" data-theme="light-emerald">
+                        <div class="theme-preview light-emerald-preview"></div>
+                        <span>Light Emerald</span>
+                    </button>
+                    <button class="theme-option" data-theme="light-purple">
+                        <div class="theme-preview light-purple-preview"></div>
+                        <span>Light Purple</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="app-footer">
+        <div class="footer-content">
+            <a href="https://github.com/mbiboss" target="_blank" rel="noopener noreferrer" class="footer-link">
+                <img src="https://i.postimg.cc/Rh4B24Dk/Mbi-dark.png" alt="Logo" class="footer-logo">
+                <span class="footer-text">Made by <span class="footer-highlight">MBI DARK</span></span>
+            </a>
+            <div class="social-links">
+                <a href="https://facebook.com/mbiboss" target="_blank" rel="noopener noreferrer" class="social-btn facebook" title="Facebook">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </a>
+                <a href="https://youtube.com/@mbidark" target="_blank" rel="noopener noreferrer" class="social-btn youtube" title="YouTube">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                </a>
+                <a href="https://wa.me/yourphonenumber" target="_blank" rel="noopener noreferrer" class="social-btn whatsapp" title="WhatsApp">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
